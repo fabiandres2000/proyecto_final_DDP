@@ -27,6 +27,7 @@ namespace Application.Services
                 NuevoSintoma.Descripcion = request.Descripcion;
                 _unitOfWork.SintomaRepository.Add(NuevoSintoma);
                 _unitOfWork.Commit();
+               
                 return new SintomaResponse() { Message = $"Se Registro" };
 
             }

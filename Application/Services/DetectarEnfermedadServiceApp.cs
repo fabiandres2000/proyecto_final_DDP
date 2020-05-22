@@ -21,27 +21,33 @@ namespace Application.Services
         }
         public DetectarResponseapp detectar(DetectarRequestapp request)
         {
+            var paciente = _unitOfWork.IPacienteRepository.FindFirstOrDefault(x => x.Identificacion==request.IdPaciente);
+            if (paciente == null)
+            {
+                return new DetectarResponseapp() { Message = $"el paciente no existe" };
+            }
+
             DetectarEnfermedadService detectarEnfermedad = new DetectarEnfermedadService();
             DetectarEnfermedadRequest enfermedadRequest = new DetectarEnfermedadRequest();
-            var enfermedades = _unitOfWork.EnfermedadRepository.GetAll().ToList();
-            enfermedadRequest.Enfermedades = enfermedades;
+            var enfermedades = _unitOfWork.EnfermedadRepository.FindBy(includeProperties:"Sintomas").ToList(); 
+            enfermedadRequest.Enfermedades = enfermedades;   
             //asociar sintomas a cada enfermedad//////////////////////////////////////////////////////////////////////////////////////////
-            foreach (var Item in enfermedades)
+            foreach (var Item in enfermedadRequest.Enfermedades)
             {
                 Console.WriteLine(Item.Nombre+" "+Item.Id);
-                var enfermedadsintoma = _unitOfWork.IEnfermedadSintoma.FindBy(p=> p.Enfermedad==Item,includeProperties: "Sintoma,Enfermedad").ToList();  
+                var enfermedadsintoma = _unitOfWork.IEnfermedadSintoma.FindBy(p=> p.Enfermedad.Codigo==Item.Codigo,includeProperties: "Sintoma,Enfermedad").ToList();  
                 Console.WriteLine("sintomas asociadas de " + Item.Nombre);
                 foreach (var item2 in enfermedadsintoma) {
-                    var sintoma = _unitOfWork.SintomaRepository.FindFirstOrDefault(p => p.Codigo == item2.Sintoma.Codigo);
-                    Console.WriteLine(sintoma.Descripcion);
-                    Item.Sintomas.Add(sintoma);
+                   //var sintoma = _unitOfWork.SintomaRepository.FindFirstOrDefault(p => p.Codigo.Equals(item2.Sintoma.Codigo));            
+                   Console.WriteLine(item2.Sintoma.Descripcion); 
+                   Item.Sintomas.Add(item2.Sintoma); 
                 }
                 Console.WriteLine("---------------------------------------");
             }
+
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            enfermedadRequest.Paciente = _unitOfWork.IPacienteRepository.FindFirstOrDefault(p=> p.Identificacion == request.IdPaciente);
             //////////////////buscar sintomas////////////////////////////////////////////////////////////////////////////////////////////
-            foreach(var item3 in request.Descipciones)
+            foreach (var item3 in request.Descipciones)
             {
                 var sintomapaciente = _unitOfWork.SintomaRepository.FindFirstOrDefault(p => p.Descripcion==(item3));
                 if (sintomapaciente!=null) {
@@ -53,8 +59,9 @@ namespace Application.Services
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             ///////////////calcilar probabilidad enfermedad////////////////////////////////////////////////////////////////////////////////////////
             if (enfermedadRequest.Sintomas.Count()>1)
-            {             
-                var deteccion =detectarEnfermedad.CalcularProbabilidad(enfermedadRequest);
+            {
+                enfermedadRequest.Paciente = paciente;
+                var deteccion = detectarEnfermedad.CalcularProbabilidad(enfermedadRequest);
                 return new DetectarResponseapp() { Message = $"se le manda tratamiento", enfermedad = deteccion.Enfermedad, diagnostico = deteccion.Diagnostico};
             }
             else
@@ -102,6 +109,12 @@ namespace Application.Services
         public string IdPaciente { get; set; }
         public Paciente Paciente { get; set; }
         public List<string> Descipciones { get; set; }
+
+        public DetectarRequestapp(string id, List<string> des)
+        {
+            IdPaciente = id;
+            Descipciones = des;
+        }
        
     }
 

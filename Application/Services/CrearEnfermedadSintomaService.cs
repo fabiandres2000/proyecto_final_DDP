@@ -30,7 +30,6 @@ namespace Application.Services
                 if (NuevoEnfermedadSintoma.Guardar(NuevoEnfermedadSintoma).Equals("se guardo todo cachon")) {  
                     _unitOfWork.IEnfermedadSintoma.Add(NuevoEnfermedadSintoma);
                     _unitOfWork.Commit();
-                   
                     return new EnfermedadSintomaResponse() { Message = $"Se Registro" };
                 }
                 return new EnfermedadSintomaResponse() { Message = $"Llene Todos los campos" };

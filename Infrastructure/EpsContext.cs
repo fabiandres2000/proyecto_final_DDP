@@ -8,9 +8,9 @@ using System.Text;
 
 namespace Infrastructure
 {
-    public  class EpsContext :  DbContextBase
+    public class EpsContext : DbContextBase
     {
-       
+
         public DbSet<Paciente> Paciente { get; set; }
         public DbSet<Administrador> Administrador { get; set; }
         public DbSet<Medico> Medico { get; set; }
@@ -38,5 +38,9 @@ namespace Infrastructure
             optionsBuilder.UseSqlServer(@"Server=DESKTOP-Q5U0CKK\SQLEXPRESS;Database=EpsBD;Integrated Security=True;");
         }*/
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseInMemoryDatabase("Database=EpsBD7");
+        }
     }
 }

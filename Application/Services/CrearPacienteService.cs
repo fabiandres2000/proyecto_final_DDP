@@ -41,8 +41,10 @@ namespace Application.Services
                 if (NuevoPaciente.Guardar(NuevoPaciente).Equals("Registrado correctamente"))
                 {
                      _unitOfWork.IPacienteRepository.Add(NuevoPaciente);
-                     _unitOfWork.Commit();
+                     _unitOfWork.Commit(); 
+                    
                      return new PacienteResponse() { Message = $"Se Registro CorrectaMente" };
+                    
                 }
                 return new PacienteResponse() { Message = $"Digite los campos primordiales para su registro" };
             }

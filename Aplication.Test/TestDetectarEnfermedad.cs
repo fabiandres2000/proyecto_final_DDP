@@ -45,10 +45,9 @@ namespace Aplication.Test
         [SetUp]
         public void Setup()
         {
-            var options = new DbContextOptionsBuilder<EpsContext>().UseInMemoryDatabase("EpsBD3").Options;
+            var options = new DbContextOptionsBuilder<EpsContext>().UseInMemoryDatabase("BDeps").Options;
             _context = new EpsContext(options);
             unitOfWork = new UnitOfWork(_context);
-
             paciente = new PacienteRequest()
             {
                 Identificacion = "1234",
@@ -59,11 +58,11 @@ namespace Aplication.Test
                 Edad = 24,
                 Estrato = 2,
                 Sexo = "M",
-                Telefono = "3173345666"
+                Telefono = "3173345666",
+                TipoAfiliacion ="cotizante"
+                
             };
-            CrearPacienteService service = new CrearPacienteService(unitOfWork);
-            var response = service.CrearPaciente(paciente);
-
+            new CrearPacienteService(unitOfWork).CrearPaciente(paciente);
             medico = new MedicoRequest()
             {
                 Identificacion = "123",
@@ -75,13 +74,9 @@ namespace Aplication.Test
                 Especializacion = "pulmonar",
                 Estrato = 5,
                 Sexo = "M",
-                Telefono = "3123345666"
+                Telefono = "3123345666",       
             };
-
-            CrearMedicoService service2 = new CrearMedicoService(unitOfWork);
-            var response2 = service2.CrearMedico(medico);
-
-
+            new CrearMedicoService(unitOfWork).CrearMedico(medico);
             sintoma1 = new SintomaRequest()
             {
                 Codigo = "A1",
@@ -123,16 +118,14 @@ namespace Aplication.Test
                 Codigo = "A7",
                 Descripcion = "Dolor En El Pecho"
             };
-
-            CrearSintomaService service3 = new CrearSintomaService(unitOfWork);
-            var response3 = service3.CrearSitoma(sintoma1);
-            var response4 = service3.CrearSitoma(sintoma2);
-            var response5 = service3.CrearSitoma(sintoma3);
-            var response6 = service3.CrearSitoma(sintoma4);
-            var response7 = service3.CrearSitoma(sintoma5);
-            var response8 = service3.CrearSitoma(sintoma6);
-            var response9 = service3.CrearSitoma(sintoma7);
-
+            new CrearSintomaService(unitOfWork).CrearSitoma(sintoma1);
+            new CrearSintomaService(unitOfWork).CrearSitoma(sintoma1);
+            new CrearSintomaService(unitOfWork).CrearSitoma(sintoma2);
+            new CrearSintomaService(unitOfWork).CrearSitoma(sintoma3);
+            new CrearSintomaService(unitOfWork).CrearSitoma(sintoma4);
+            new CrearSintomaService(unitOfWork).CrearSitoma(sintoma5);
+            new CrearSintomaService(unitOfWork).CrearSitoma(sintoma6);
+            new CrearSintomaService(unitOfWork).CrearSitoma(sintoma7);
             enfermedad1 = new EnfermedadRequest()
             {
                 Codigo = "A321",
@@ -155,13 +148,9 @@ namespace Aplication.Test
                 Gravedad = "GRAVE",
                 Tipo = "PULMONAR",
             };
-
-            CrearEnfermedadService service4 = new CrearEnfermedadService(unitOfWork);
-            var response10 = service4.CrearEnfermedad(enfermedad1);
-            var response11 = service4.CrearEnfermedad(enfermedad2);
-            var response12 = service4.CrearEnfermedad(enfermedad3);
-
-
+            new CrearEnfermedadService(unitOfWork).CrearEnfermedad(enfermedad1);
+            new CrearEnfermedadService(unitOfWork).CrearEnfermedad(enfermedad2);
+            new CrearEnfermedadService(unitOfWork).CrearEnfermedad(enfermedad3);
           
             enfermedad1sintoma1 = new EnfermedadSintomaRequest()
             {
@@ -178,10 +167,9 @@ namespace Aplication.Test
                 IDenfermedad = "A321",
                 IDsintoma = "A7",
             };
-            CrearEnfermedadSintomaService service5 = new CrearEnfermedadSintomaService(unitOfWork);
-            var response13 = service5.CrearEnfermedadSitoma(enfermedad1sintoma1);
-            var response14 = service5.CrearEnfermedadSitoma(enfermedad1sintoma6);
-            var response15 = service5.CrearEnfermedadSitoma(enfermedad1sintoma7);
+            new CrearEnfermedadSintomaService(unitOfWork).CrearEnfermedadSitoma(enfermedad1sintoma1);
+            new CrearEnfermedadSintomaService(unitOfWork).CrearEnfermedadSitoma(enfermedad1sintoma6);
+            new CrearEnfermedadSintomaService(unitOfWork).CrearEnfermedadSitoma(enfermedad1sintoma7);
 
             enfermedad2sintoma1 = new EnfermedadSintomaRequest()
             {
@@ -203,11 +191,11 @@ namespace Aplication.Test
                 IDenfermedad = "A322",
                 IDsintoma = "A4",
             };
-            CrearEnfermedadSintomaService service6 = new CrearEnfermedadSintomaService(unitOfWork);
-            var response16 = service5.CrearEnfermedadSitoma(enfermedad2sintoma1);
-            var response17 = service5.CrearEnfermedadSitoma(enfermedad2sintoma2);
-            var response18 = service5.CrearEnfermedadSitoma(enfermedad2sintoma3);
-            var response19 = service5.CrearEnfermedadSitoma(enfermedad2sintoma4);
+
+            new CrearEnfermedadSintomaService(unitOfWork).CrearEnfermedadSitoma(enfermedad2sintoma1);
+            new CrearEnfermedadSintomaService(unitOfWork).CrearEnfermedadSitoma(enfermedad2sintoma2);
+            new CrearEnfermedadSintomaService(unitOfWork).CrearEnfermedadSitoma(enfermedad2sintoma3);
+            new CrearEnfermedadSintomaService(unitOfWork).CrearEnfermedadSitoma(enfermedad2sintoma4);
 
 
             enfermedad3sintoma4 = new EnfermedadSintomaRequest()
@@ -225,55 +213,27 @@ namespace Aplication.Test
                 IDenfermedad = "A323",
                 IDsintoma = "A6",
             };
-          
-            CrearEnfermedadSintomaService service7 = new CrearEnfermedadSintomaService(unitOfWork);
-            var response20 = service7.CrearEnfermedadSitoma(enfermedad2sintoma1);
-            var response21 = service7.CrearEnfermedadSitoma(enfermedad2sintoma2);
-            var response22 = service7.CrearEnfermedadSitoma(enfermedad2sintoma3);
-          
 
+
+            new CrearEnfermedadSintomaService(unitOfWork).CrearEnfermedadSitoma(enfermedad3sintoma4);
+            new CrearEnfermedadSintomaService(unitOfWork).CrearEnfermedadSitoma(enfermedad3sintoma5);
+            new CrearEnfermedadSintomaService(unitOfWork).CrearEnfermedadSitoma(enfermedad3sintoma6);
+           
+             
         }
 
         [Test]
 
         public void DetectarCancerPulmonar()
-        {        
-            DetectarRequestapp request = new DetectarRequestapp();
-            request.IdPaciente = "1234";
+        {
             List<string> des = new List<string>() {"Tos","Dificultad Para Respirar","Dolor En El Pecho"};
-            request.Descipciones = des;
-            DetectarEnfermedadServiceApp service8 = new DetectarEnfermedadServiceApp(unitOfWork);
-            DetectarResponseapp responseapp = new DetectarResponseapp();
-            responseapp = service8.detectar(request);
+            DetectarRequestapp request = new DetectarRequestapp("1234",des);
+            DetectarEnfermedadServiceApp service8 = new DetectarEnfermedadServiceApp (new UnitOfWork(_context));
+            var responseapp = service8.detectar(request);
             Assert.AreEqual(responseapp.enfermedad.Nombre,"cancer-pulmonar");
             Console.WriteLine("su diagnostico es " + responseapp.diagnostico.Descripcion);
         }
 
-        [Test]
-        public void DetectarAGripa()
-        {
-            DetectarRequestapp request = new DetectarRequestapp();
-            request.IdPaciente = "1234";
-            List<string> des = new List<string>() {"Tos", "Fiebre", "Secrecion Nasal"};
-            request.Descipciones = des;
-            DetectarEnfermedadServiceApp service9 = new DetectarEnfermedadServiceApp(unitOfWork);
-            DetectarResponseapp responseapp = new DetectarResponseapp();
-            responseapp = service9.detectar(request);
-            Assert.AreEqual(responseapp.enfermedad.Nombre, "gripa");
-            Console.WriteLine("su diagnostico es "+ responseapp.diagnostico.Descripcion);
-        }
-
-        [Test]
-        public void DetectarNinguna()
-        {
-            DetectarRequestapp request = new DetectarRequestapp();
-            request.IdPaciente = "1234";
-            List<string> des = new List<string>() { "Fiebre", "nada", "nada" };
-            request.Descipciones = des;
-            DetectarEnfermedadServiceApp service10 = new DetectarEnfermedadServiceApp(unitOfWork);
-            DetectarResponseapp responseapp = new DetectarResponseapp();
-            responseapp = service10.detectar(request);
-            Assert.AreEqual(responseapp.Message, "sus sintomas no estan asociados a una enfermedad pulmonar");
-        }
+       
     }
 }

@@ -43,6 +43,8 @@ namespace Application.Services
                 {
                     _unitOfWork.IMedicoRepository.Add(NuevoMedico);
                     _unitOfWork.Commit();
+                    
+                    
                     return new MedicoResponse() { Message = $"Se Registro CorrectaMente" };
                 }
                 return new MedicoResponse() { Message = $"Digite los campos primordiales para su registro" };
@@ -71,6 +73,7 @@ namespace Application.Services
         public List<Paciente> Pacientes { get; set; }
         public List<Cita> Citas { get; set; }
         public List<Diagnostico> Diagnosticos { get; set; }
+       
 
     }
 
