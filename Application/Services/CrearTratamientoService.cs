@@ -17,7 +17,7 @@ namespace Application.Services
 
         }
 
-        public TratamientoResponse CrearSitoma(TratamientoRequest request)
+        public TratamientoResponse CrearTratamiento(TratamientoRequest request)
         {
             Tratamiento tratamiento = _unitOfWork.TratamientoRepository.FindFirstOrDefault(T => T.Codigo == request.Codigo);
             if (tratamiento == null)
