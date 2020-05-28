@@ -31,7 +31,7 @@ namespace Application.Services
         public List<Diagnostico> GetEstado(string Estado)
         {
             var ConsultarEstado = _unitOfWork.DiagnosticoRepository.FindBy(T => T.Estado == Estado);
-            _unitOfWork.Dispose();
+           // _unitOfWork.Dispose();
             return ConsultarEstado.ToList();
         }
 

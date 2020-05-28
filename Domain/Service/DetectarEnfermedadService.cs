@@ -10,6 +10,7 @@ namespace Domain.Entity
     {
         public Paciente Paciente { get; set; }
         public List<Sintoma> Sintomas = new List<Sintoma>();
+        public List<Tratamiento> tratamientos = new List<Tratamiento>();
         public List<Enfermedad> Enfermedades { get; set; }
     }
 

@@ -29,7 +29,7 @@ namespace Application.Services
 
             DetectarEnfermedadService detectarEnfermedad = new DetectarEnfermedadService();
             DetectarEnfermedadRequest enfermedadRequest = new DetectarEnfermedadRequest();
-            var enfermedades = _unitOfWork.EnfermedadRepository.FindBy(includeProperties:"Sintomas").ToList(); 
+            var enfermedades = _unitOfWork.EnfermedadRepository.FindBy(includeProperties:"Sintomas").ToList();
             enfermedadRequest.Enfermedades = enfermedades;   
             //asociar sintomas a cada enfermedad//////////////////////////////////////////////////////////////////////////////////////////
             foreach (var Item in enfermedadRequest.Enfermedades)
@@ -62,6 +62,8 @@ namespace Application.Services
             {
                 enfermedadRequest.Paciente = paciente;
                 var deteccion = detectarEnfermedad.CalcularProbabilidad(enfermedadRequest);
+                ConsultarEnfermedadTratamientoService consultarEnfermedadTratamiento = new ConsultarEnfermedadTratamientoService(_unitOfWork);
+                request.tratamientosEnfermedad = consultarEnfermedadTratamiento.GetTratamiento(deteccion.Enfermedad.Codigo);
                 return new DetectarResponseapp() { Message = $"se le manda tratamiento", enfermedad = deteccion.Enfermedad, diagnostico = deteccion.Diagnostico};
             }
             else
@@ -109,6 +111,7 @@ namespace Application.Services
         public string IdPaciente { get; set; }
         public Paciente Paciente { get; set; }
         public List<string> Descipciones { get; set; }
+        public DetectarEnfermedadRequest tratamientosEnfermedad { get; set; }
 
         public DetectarRequestapp(string id, List<string> des)
         {
@@ -122,6 +125,8 @@ namespace Application.Services
     {
         public string Message { get; set; }
         public Enfermedad enfermedad { get; set; }
+        
+      
         public Diagnostico diagnostico { get; set;}
     }
 }
