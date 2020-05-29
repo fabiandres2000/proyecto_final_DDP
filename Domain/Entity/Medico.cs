@@ -47,9 +47,9 @@ namespace Domain.Entity
             return diagnostico.ToList();
         }
 
-        public bool Verificar_disponibilidad(DateTime fecha)
+        public bool Verificar_disponibilidad(string fecha,int minuto,int hora)
         {
-            var disponibilidad  = Citas.Where(x =>x.fecha == fecha).Count();
+            var disponibilidad  = Citas.Where(x =>x.Fecha == fecha&& x.Minuto==minuto&&x.Hora==hora).Count();
             if (disponibilidad>=1)
             {
                 return false;

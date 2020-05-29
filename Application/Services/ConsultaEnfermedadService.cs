@@ -23,7 +23,7 @@ namespace Application.Services
         {
 
             var res = _unitOfWork.EnfermedadRepository.GetAll();
-            _unitOfWork.Dispose();
+            //_unitOfWork.Dispose();
             return res.ToList();
         }
     }
