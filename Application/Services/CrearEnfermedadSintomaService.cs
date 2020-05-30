@@ -23,16 +23,22 @@ namespace Application.Services
             request.Sintoma  = _unitOfWork.SintomaRepository.FindFirstOrDefault(P => P.Codigo == request.IDsintoma);
             request.Enfermedad = _unitOfWork.EnfermedadRepository.FindFirstOrDefault(P => P.Codigo == request.IDenfermedad);
             ///////////////////////////////////////////////////////////
-             
-            EnfermedadSintoma NuevoEnfermedadSintoma = new EnfermedadSintoma();
+            if (request.Sintoma!=null && request.Enfermedad==null) {
+                EnfermedadSintoma NuevoEnfermedadSintoma = new EnfermedadSintoma();
                 NuevoEnfermedadSintoma.Enfermedad = request.Enfermedad;
                 NuevoEnfermedadSintoma.Sintoma = request.Sintoma;
-                if (NuevoEnfermedadSintoma.Guardar(NuevoEnfermedadSintoma).Equals("se guardo todo cachon")) {  
+                if (NuevoEnfermedadSintoma.Guardar(NuevoEnfermedadSintoma).Equals("se guardo todo cachon")) {
                     _unitOfWork.IEnfermedadSintoma.Add(NuevoEnfermedadSintoma);
                     _unitOfWork.Commit();
                     return new EnfermedadSintomaResponse() { Message = $"Se Registro" };
                 }
                 return new EnfermedadSintomaResponse() { Message = $"Llene Todos los campos" };
+            }
+            else
+            {
+                return new EnfermedadSintomaResponse() { Message = $"No existe Fabian Cachon" };
+
+            }
         }
 
     }

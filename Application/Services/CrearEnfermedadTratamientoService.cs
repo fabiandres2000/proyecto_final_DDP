@@ -20,20 +20,25 @@ namespace Application.Services
         {
             request.tratamiento = _unitOfWork.TratamientoRepository.FindFirstOrDefault(p => p.Codigo == request.IDTratamiento);
             request.Enfermedad = _unitOfWork.EnfermedadRepository.FindFirstOrDefault(P => P.Codigo == request.IDenfermedad);
+            if (request.tratamiento!=null && request.Enfermedad!=null) {
+                EnfermedadTratamiento NuevoEnfermedadTratamiento = new EnfermedadTratamiento();
 
-            EnfermedadTratamiento NuevoEnfermedadTratamiento = new EnfermedadTratamiento();
+                NuevoEnfermedadTratamiento.enfermedad = request.Enfermedad;
+                NuevoEnfermedadTratamiento.tratamiento = request.tratamiento;
+                if (NuevoEnfermedadTratamiento.Guardar(NuevoEnfermedadTratamiento).Equals("se guardo todo cachon"))
+                {
+                    _unitOfWork.IEnfermedadTratamientoRepository.Add(NuevoEnfermedadTratamiento);
+                    _unitOfWork.Commit();
+                    return new EnfermedadTratamientoResponse() { Message = $"Se Registro" };
+                }
+                return new EnfermedadTratamientoResponse() { Message = $"Llene Todos los campos" };
 
-            NuevoEnfermedadTratamiento.enfermedad = request.Enfermedad;
-            NuevoEnfermedadTratamiento.tratamiento = request.tratamiento;
-            if (NuevoEnfermedadTratamiento.Guardar(NuevoEnfermedadTratamiento).Equals("se guardo todo cachon"))
-            {
-                _unitOfWork.IEnfermedadTratamientoRepository.Add(NuevoEnfermedadTratamiento);
-                _unitOfWork.Commit();
-                return new EnfermedadTratamientoResponse() { Message = $"Se Registro" };
             }
-            return new EnfermedadTratamientoResponse() { Message = $"Llene Todos los campos" };
+            else
+            {
+                return new EnfermedadTratamientoResponse() { Message = $"No Existe Fabian Cachon" };
 
-
+            }
 
         }
 
