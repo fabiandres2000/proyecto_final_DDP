@@ -66,6 +66,38 @@ namespace Application.Services
             }
         }
 
+        public EliminarResponse ElminarEnfermedadSintoma(int id)
+        {
+            EnfermedadSintoma enfermedadSintoma = _unitOfWork.IEnfermedadSintoma.Find(id);
+            if (enfermedadSintoma == null)
+            {
+                return new EliminarResponse() { Message = $"No Existe" };
+            }
+            else
+            {
+                _unitOfWork.IEnfermedadSintoma.Delete(enfermedadSintoma);
+                _unitOfWork.Commit();
+                return new EliminarResponse() { Message = $"Se Elimio" };
+            }
+
+        }
+
+        public EliminarResponse ElminarEnfermedadTratamiento(int id)
+        {
+            EnfermedadTratamiento enfermedadTratamiento = _unitOfWork.IEnfermedadTratamientoRepository.Find(id);
+            if (enfermedadTratamiento == null)
+            {
+                return new EliminarResponse() { Message = $"No Existe" };
+            }
+            else
+            {
+                _unitOfWork.IEnfermedadTratamientoRepository.Delete(enfermedadTratamiento);
+                _unitOfWork.Commit();
+                return new EliminarResponse() { Message = $"Se Elimio" };
+            }
+
+        }
+
         public EliminarResponse DeleteTratamiento(int id)
         {
 
