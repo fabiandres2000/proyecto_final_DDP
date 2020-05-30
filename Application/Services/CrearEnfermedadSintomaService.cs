@@ -43,6 +43,7 @@ namespace Application.Services
     }
     public class EnfermedadSintomaRequest
     {
+        public int Id { get; set; }
         public string IDsintoma { get; set; }
         public string IDenfermedad { get; set; }
         public Sintoma Sintoma { get; set; }

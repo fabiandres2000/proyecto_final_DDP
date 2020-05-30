@@ -24,7 +24,6 @@ namespace Application.Services
             if (paciente == null)
             {
                 Paciente NuevoPaciente = new Paciente();
-                NuevoPaciente.Id = request.Id;
                 NuevoPaciente.Apellidos = request.Apellidos;
                 NuevoPaciente.CorreoElectronico = request.CorreoElectronico;
                 NuevoPaciente.DepartamentoResidencia = request.DepartamentoResidencia;

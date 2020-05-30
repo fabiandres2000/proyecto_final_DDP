@@ -48,6 +48,7 @@ namespace Application.Services
     }
     public class EnfermedadRequest
     {
+        
         public string Codigo { get; set; }
         public string Nombre { get; set; }
        public string Tipo { get; set; }
